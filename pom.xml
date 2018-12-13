@@ -146,6 +146,7 @@
                 <version>${hk2.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <generateOSGiHeaders>true</generateOSGiHeaders>
                     <archive>
                         <!-- Use the manifest.mf produced by maven-bundle-plugin:manifest -->
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
