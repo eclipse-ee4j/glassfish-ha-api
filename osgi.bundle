@@ -25,11 +25,5 @@
 
 Bundle-SymbolicName: \
                         ${project.groupId}.${project.artifactId}
-
-Class-Path: \
-                        hk2.jar hk2-core.jar class-model.jar config.jar tiger-types.jar \
-                        bean-validator.jar jtype.jar auto-depends.jar javax.inject.jar \
-                        asm-all-repackaged.jar hk2-api.jar osgi-resource-locator.jar \
-                        javax.inject.jar
 # dependent flashlight package resolved at runtime
 # DynamicImport-Package: org.glassfish.flashlight.provider
