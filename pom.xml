@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 1997, 2021 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
     terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,21 +23,20 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
 
     <groupId>org.glassfish.ha</groupId>
     <artifactId>ha-api</artifactId>
     <version>3.1.13-SNAPSHOT</version>
-    <packaging>hk2-jar</packaging>
     <name>GlassFish High Availability APIs and SPI</name>
 
     <scm>
         <connection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</developerConnection>
         <url>https://github.com/eclipse-ee4j/glassfish-ha-api</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>
@@ -75,38 +74,75 @@
     </issueManagement>
 
     <properties>
-        <hk2.version>2.0.5</hk2.version>
+        <hk2.version>3.0.2</hk2.version>
         <legal.doc.source>${maven.multiModuleProjectDirectory}</legal.doc.source>
+        <base.java.level>8</base.java.level>
+        <upper.java.level>9</upper.java.level>
     </properties>
 
     <build>
         <plugins>
-            <!-- Configure maven-bundle-plugin to generate OSGi manifest.
-                 Please note: we use the manifest goal only and not the bundle goal.
-                  The bundle goal can lead to very surprising results if the
-                  package names are not correctly specified. So,
-                  we use the jar plugin to generate the jar.-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[11,)</version>
+                                    <message>JDK11+ is required</message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <release>${upper.java.level}</release>
+                            <compilerArgs>
+                                <arg>-Xlint:all</arg>
+                                <arg>--add-reads</arg>
+                                <arg>org.glassfish.ha.api=ALL-UNNAMED</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>base-compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <release>${base.java.level}</release>
+                            <excludes>
+                                <exclude>module-info.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-		<version>3.5.0</version>
+                <version>5.1.1</version>
                 <configuration>
-                    <!-- By default, we don't export anything.
-                    -->
-                    <Export-Package />
-                    <!-- Since, we are in a top level pom and
-                         we we don't want it to be active for plain jar type artifacts,
-                         enable the plugin for hk2-jar and bundle packaging type only,
-                    -->
-                    <supportedProjectTypes>
-                        <supportedProjectType>hk2-jar</supportedProjectType>
-                        <supportedProjectType>bundle</supportedProjectType>
-                    </supportedProjectTypes>
+                    <niceManifest>true</niceManifest>
+                    <_noextraheaders>true</_noextraheaders>
                     <instructions>
-                        <!-- Read all the configuration from osgi.bundle file, if it exists.
-                             See Felix-699 to find out why we use ${basedir}.
-                        -->
-		         <_include>-${basedir}/osgi.bundle</_include>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                        <!--<DynamicImport-Package>org.glassfish.flashlight.provider</DynamicImport-Package>-->
                     </instructions>
                 </configuration>
                 <executions>
@@ -141,135 +177,93 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+                        <plugin>
                 <groupId>org.glassfish.hk2</groupId>
-                <artifactId>hk2-maven-plugin</artifactId>
+                <artifactId>hk2-inhabitant-generator</artifactId>
                 <version>${hk2.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <generateOSGiHeaders>true</generateOSGiHeaders>
-                    <archive>
-                        <!-- Use the manifest.mf produced by maven-bundle-plugin:manifest -->
-                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sun</groupId>
-                        <artifactId>tools</artifactId>
-                        <version>${hk2.version}</version>
-                        <scope>system</scope>
-                        <systemPath>${java.home}/../lib/tools.jar</systemPath>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.4.1</version>
                 <executions>
                     <execution>
-                        <id>enforce-versions</id>
                         <goals>
-                            <goal>enforce</goal>
+                            <goal>generate-inhabitants</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-legal-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
                         </goals>
                         <configuration>
-                            <rules>
-                                <requireJavaVersion>
-                                    <version>[1.7,1.8)</version>
-                                    <message>JDK7 is required</message>
-                                </requireJavaVersion>
-                            </rules>
+                            <resources>
+                                <resource>
+                                    <directory>${legal.doc.source}</directory>
+                                    <includes>
+                                        <include>NOTICE.md</include>
+                                        <include>LICENSE.md</include>
+                                    </includes>
+                                    <targetPath>META-INF</targetPath>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-          <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                   <execution>
-                            <id>add-legal-resource</id>
-                            <phase>generate-resources</phase>
-                            <goals>
-                                <goal>add-resource</goal>
-                            </goals>
-                            <configuration>
-                                <resources>
-                                    <resource>
-                                        <directory>${legal.doc.source}</directory>
-                                        <includes>
-                                            <include>NOTICE.md</include>
-                                            <include>LICENSE.md</include>
-                                        </includes>
-                                        <targetPath>META-INF</targetPath>
-                                    </resource>
-                                </resources>
-                            </configuration>
-                        </execution>
-                  </executions>
-            </plugin> 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                    <arguments>${release.arguments}</arguments>
-                    <preparationGoals>install</preparationGoals>
-                    <goals>deploy</goals>
+                    <archive>
+                        <manifest>
+                            <addDefaultEntries>false</addDefaultEntries>
+                        </manifest>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestEntries>
+                            <Add-Reads>ALL-UNNAMED</Add-Reads>
+                            <Class-Path>hk2.jar hk2-core.jar class-model.jar config-api.jar tiger-types.jar bean-validator.jar jtype.jar auto-depends.jar jakarta.inject-api.jar asm-all-repackaged.jar hk2-api.jar osgi-resource-locator.jar</Class-Path>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>1.9.4</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <includePom>true</includePom>
-                </configuration>
-                <executions>
-                    <execution>
-                       <id>attach-sources</id>
-                       <goals>
-                           <goal>jar-no-fork</goal> 
-                       </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                   </execution>
-               </executions>
-           </plugin>                     
+                <version>3.2.0</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <release>11</release>
+                    <notimestamp>true</notimestamp>
+                    <additionalOptions>
+                        <additionalOption>--add-reads</additionalOption>
+                        <additionalOption>org.glassfish.ha.api=ALL-UNNAMED</additionalOption>
+                    </additionalOptions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultEntries>false</addDefaultEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Build-Id>${project.version} - ${buildNumber}</Implementation-Build-Id>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.glassfish.hk2</groupId>
@@ -284,29 +278,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
