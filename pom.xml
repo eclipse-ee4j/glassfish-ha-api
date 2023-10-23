@@ -80,7 +80,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.release>11</maven.compiler.release>
         <hk2.version>3.0.5</hk2.version>
     </properties>
 
@@ -153,22 +152,11 @@
             </plugin>
             
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <configuration>
-                            <release>11</release>
-                            <compilerArgs>
-                                <arg>-Xlint:all</arg>
-                                <arg>--add-reads</arg>
-                                <arg>org.glassfish.ha.api=ALL-UNNAMED</arg>
-                            </compilerArgs>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <release>11</release>
+                </configuration>
             </plugin>
             
             <!-- Creates the OSGi MANIFEST.MF file -->
@@ -233,7 +221,6 @@
             
             <!-- Adds the manifest file created by the org.apache.felix:maven-bundle-plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
