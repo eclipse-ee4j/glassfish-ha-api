@@ -119,7 +119,7 @@
                 </includes>
             </resource>
             <resource>
-                <directory>${project.basedir}/..</directory>
+                <directory>${project.basedir}</directory>
                 <includes>
                     <include>LICENSE.md</include>
                     <include>NOTICE.md</include>
