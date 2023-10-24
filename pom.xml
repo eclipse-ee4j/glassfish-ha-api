@@ -230,13 +230,7 @@
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                         <manifestEntries>
                             <Add-Reads>ALL-UNNAMED</Add-Reads>
-                            <Class-Path>hk2.jar hk2-core.jar
-                                class-model.jar config-api.jar
-                                tiger-types.jar bean-validator.jar
-                                jtype.jar auto-depends.jar
-                                jakarta.inject-api.jar
-                                asm-all-repackaged.jar hk2-api.jar
-                                osgi-resource-locator.jar</Class-Path>
+                            <Class-Path>hk2.jar hk2-core.jar class-model.jar config-api.jar tiger-types.jar bean-validator.jar jtype.jar auto-depends.jar jakarta.inject-api.jar asm-all-repackaged.jar hk2-api.jar osgi-resource-locator.jar</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
