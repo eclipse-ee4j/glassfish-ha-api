@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation.
  * Copyright (c) 2021 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -16,6 +17,7 @@
 
 module org.glassfish.ha.api {
     requires java.logging;
+    requires org.glassfish.hk2.api;
 
     exports org.glassfish.ha.store.annotations;
     exports org.glassfish.ha.store.api;
