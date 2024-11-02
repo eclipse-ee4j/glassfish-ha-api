@@ -2,7 +2,7 @@
 
 <!--
 
-    Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation.
+    Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation.
     Copyright (c) 1997, 2021 Oracle and/or its affiliates. All rights reserved.
 
     This program and the accompanying materials are made available under the
@@ -282,7 +282,7 @@ Use is subject to <a href="http://www.eclipse.org/legal/epl-2.0" target="_top">l
             <plugin>
                 <groupId>org.eclipse.dash</groupId>
                 <artifactId>license-tool-plugin</artifactId>
-                <version>1.0.2</version>
+                <version>1.1.0</version>
                 <executions>
                     <execution>
                         <id>license-check</id>
