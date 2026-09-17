@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -17,7 +18,7 @@
 package org.glassfish.ha.store.criteria;
 
 /**
- * A class that represents a Criteria. Currently only an Expression<Boolean>
+ * A class that represents a Criteria. Currently only an {@code Expression<Boolean>}
  *  can be specified using a Criteria. In future this class may be modified
  *  to support selection of Attributes from V
  *

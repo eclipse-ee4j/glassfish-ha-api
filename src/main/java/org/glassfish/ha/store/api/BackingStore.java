@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation. All rights reserved.
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -24,19 +24,14 @@ import java.io.*;
 /**
  * An object that stores a given value against an id. This class defines the
  * set of operations that a container could perform on a store.
- * <p/>
- * <p/>
+ * <p>
  * An instance of BackingStore is created by calling
- * <code>BackingStoreFactory.createBackingStore()</code> method.
- * <p/>
- * <p/>
+ * {@code BackingStoreFactory.createBackingStore()} method.
+ * <p>
  * The BackingStore instance is created and used for storing data that belongs
  * to a single application or container.
- * <p/>
- * <p/>
+ * <p>
  * The store implementation must be thread safe.
- * <p/>
- * <p/>
  *
  * @author Mahesh.Kannan@Sun.Com
  * @author Larry.White@Sun.Com
@@ -79,18 +74,16 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
      *
      * @param key   the id
      * @param value The Metadata to be stored
-     * @throws BackingStoreException if the underlying store implementation encounters any
-     *                               exception
-     * @pram isNew
-     * A flag indicating if the entry is new or not.
+     * @param isNew  A flag indicating if the entry is new or not.
+     * @throws BackingStoreException if the underlying store implementation encounters any exception
      * @return A (possibly null) String indicating the instance name where the data was saved.
      */
     public abstract String save(K key, V value, boolean isNew) throws BackingStoreException;
 
     /**
      * Remove the association for the id.
-     * <p/>
-     * After this call, any call to <code>load(id)</code> <b>must</b> return
+     * <p>
+     * After this call, any call to {@code load(id)} <b>must</b> return
      * null. In addition, any association between <code>id</code> and
      * container extra params must also be removed.
      *
@@ -100,11 +93,9 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
      */
     public abstract void remove(K key) throws BackingStoreException;
 
-    /** TODO: BEGIN: REMOVE after shoal integration **/
     public void updateTimestamp(K key, long time) throws BackingStoreException {}
     public int removeExpired(long idleForMillis)
              throws BackingStoreException {return 0;}
-    /** TODO: END: REMOVE AFTER SHOAL INTEGRATION **/
 
     /**
      * Recomended way is to just do a save(k, v)
@@ -123,7 +114,7 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
              throws BackingStoreException {
         return 0;
     }
-    
+
     /**
      * Get the current size of the store
      *
@@ -148,8 +139,7 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
      * opened resources. The store must not be used after this call.
      */
     public void destroy()
-            throws BackingStoreException {
-        
+        throws BackingStoreException {
     }
 
 
