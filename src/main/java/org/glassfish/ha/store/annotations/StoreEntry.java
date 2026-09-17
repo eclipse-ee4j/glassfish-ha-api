@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -19,24 +20,28 @@ package org.glassfish.ha.store.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.glassfish.ha.store.api.BackingStore;
+import org.glassfish.ha.store.spi.Storable;
+
 import java.lang.annotation.ElementType;
 
 /**
  * An annotation to describe a class as a SToreEntry. For each class a.b.X
- *  that is annotated with @StoreEntry, an APT will be used to generate
+ *  that is annotated with {@code @StoreEntry}, an APT will be used to generate
  *  a class a.b.X_
  *
  * For each attribute A of type T in X, a.b.X_ contains a (static) field whose
- *  type is SessionAttributeMetadata<X, T>. SessionAttributeMetadata describes the attribute
- *  by giving its (java) type, name etc.
+ *  type is {@code SessionAttributeMetadata<X, T>. SessionAttributeMetadata}
+ *  describes the attribute by giving its (java) type, name etc.
  *
  * Also, for each a.b.X a sub-class by name a.b.X_Storable will also be generated.
- *  a.b.X_Storable will implement Storable interface. The Storable interface allows
+ *  a.b.X_Storable will implement {@link Storable} interface. The {@link Storable} interface allows
  *  a Store implementation to detect dirty attributes. An attribute A is dirty, if
- *  its setter method (or the method that was annotated with @Attribute("A") was
- *  invoked). An instance of a.b.X_Storable can be obtained by calling
- * BackingStore.getStorable()
- * 
+ *  its setter method (or the method that was annotated with {@code @Attribute("A")} was
+ *  invoked). An instance of a.b.X {@link Storable} can be obtained by calling
+ * {@link BackingStore#load(java.io.Serializable, String)}
+ *
  * An annotation that can be used to declare a String Attribute
  *  as a Version. Version attribute is a special attribute of
  *  a StoreEntry.

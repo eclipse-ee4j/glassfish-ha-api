@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -20,30 +21,32 @@ import java.lang.reflect.Method;
 
 /**
  * For each attribute A of type T in a.b.X, a.b.X_ contains a (static) field whose
- *  type is AttributeMetadata<X, T>. AttributeMetadata describes the attribute
+ *  type is {@code AttributeMetadata<X, T>. AttributeMetadata} describes the attribute
  *  by giving its (java) type, name etc.
- * 
+ *
  * @param <S> The StoreEntry that this AttributeMetadata belongs to
  * @param <T> The Java type of the Attribute that this Metadata represents
  *
  * @author Mahesh.Kannan@Sun.Com
- * @aauthor Larry.white@Sun.Com
+ * @author Larry.white@Sun.Com
  */
 public interface AttributeMetadata<S, T> {
 
     public String getName();
 
     /**
-     * Get the java type of this attribute
-     *
-     * @return
+     * @return the java type of this attribute
      */
     public Class<T> getAttributeType();
 
-    //The getter method to access the value
+    /**
+     * @return The getter method to access the value
+     */
     public Method getGetterMethod();
 
-    //The setter method to set the value
+    /**
+     * @return The setter method to set the value
+     */
     public Method getSetterMethod();
 
     public boolean isVersionAttribute();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation. All rights reserved.
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -34,22 +34,16 @@ public interface MutableStoreEntry
 
     /**
      * The store name for which this Storable was created
-     *
-     * @return The store name
      */
     public void _markAsDirty(int attrIndex);
 
     /**
      * The String that can be used by the store implementation to hash the StoreEntry
-     *
-     * @return A (possibly null) key to be used for hashing purpose
      */
     public void _markAsClean(int attrIndex);
 
     /**
      * Get the version of this entry. A null value means that this entry
-     *
-     * @return The version or null if this entry has no version
      */
     public void _markStoreEntryAsClean();
 

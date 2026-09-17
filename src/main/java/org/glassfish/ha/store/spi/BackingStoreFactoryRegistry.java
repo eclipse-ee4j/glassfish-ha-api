@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation. All rights reserved.
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation.
  * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
@@ -27,16 +27,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author bhavanishankar@dev.java.net
- */
-
-/**
  * A class for storing BackingStore implementation. This is a
  * singleton and contains a mapping between persistence-type and
  * <code>BackingStoreFactory</code>.
  *
  * @author Mahesh.Kannan@Sun.Com
  * @author Larry.White@Sun.Com
+ * @author bhavanishankar@dev.java.net
  */
 public final class BackingStoreFactoryRegistry {
 
