@@ -36,7 +36,7 @@ import java.io.*;
  * @author Mahesh.Kannan@Sun.Com
  * @author Larry.White@Sun.Com
  */
-public abstract class BackingStore<K extends Serializable, V extends Serializable> {
+public abstract class BackingStore<K extends Serializable, V extends Serializable> implements AutoCloseable {
 
     BackingStoreConfiguration<K, V> conf;
 
@@ -93,25 +93,32 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
      */
     public abstract void remove(K key) throws BackingStoreException;
 
-    public void updateTimestamp(K key, long time) throws BackingStoreException {}
-    public int removeExpired(long idleForMillis)
-             throws BackingStoreException {return 0;}
+
+    public void updateTimestamp(K key, long time) throws BackingStoreException {
+    }
+
+    public int removeExpired(long idleForMillis) throws BackingStoreException {
+        return 0;
+    }
 
     /**
-     * Recomended way is to just do a save(k, v)
+     * Recommended way is to just do a save(k, v)
+     *
      * @param key
      * @param version
      * @param accessTime
+     * @return instance name or null
      * @throws BackingStoreException
      */
-    public String updateTimestamp(K key, String version, Long accessTime)
-            throws BackingStoreException {return "";}
+    public String updateTimestamp(K key, String version, Long accessTime) throws BackingStoreException {
+        return "";
+    }
 
     /**
      * Remove expired entries
+     * @return 0
      */
-    public int removeExpired()
-             throws BackingStoreException {
+    public int removeExpired() throws BackingStoreException {
         return 0;
     }
 
@@ -125,37 +132,41 @@ public abstract class BackingStore<K extends Serializable, V extends Serializabl
     public abstract int size() throws BackingStoreException;
 
     /**
-     * Typically called during shutdown of the process. The store must not be used after this call
+     * Typically called during shutdown of the process.
+     * The store must not be used after this call.
+     * The default implementation does nothing.
      *
      * @throws BackingStoreException
      */
-    public void close()
-        throws BackingStoreException {
-
+    @Override
+    public void close() throws BackingStoreException {
     }
 
     /**
-     * Called when the store is no longer needed. Must clean up and close any
-     * opened resources. The store must not be used after this call.
+     * Called when the store is no longer needed.
+     * Must clean up and close any opened resources.
+     * The store must not be used after this call.
+     * The default implementation does nothing.
+     *
+     * @throws BackingStoreException
+     * @deprecated Use {@link #close()} instead.
      */
-    public void destroy()
-        throws BackingStoreException {
+    @Deprecated(forRemoval = true, since = "3.2.0")
+    public void destroy() throws BackingStoreException {
     }
 
-
-
-    protected ObjectOutputStream createObjectOutputStream(OutputStream os)
-        throws IOException {
-        ObjectInputOutputStreamFactory oosf = ObjectInputOutputStreamFactoryRegistry.getObjectInputOutputStreamFactory();
-        return (oosf == null) ? new ObjectOutputStream(os) : oosf.createObjectOutputStream(os);
+    protected ObjectOutputStream createObjectOutputStream(OutputStream os) throws IOException {
+        ObjectInputOutputStreamFactory oosf = ObjectInputOutputStreamFactoryRegistry
+            .getObjectInputOutputStreamFactory();
+        return oosf == null ? new ObjectOutputStream(os) : oosf.createObjectOutputStream(os);
     }
 
-    protected ObjectInputStream createObjectInputStream(InputStream is)
-        throws IOException {
+    protected ObjectInputStream createObjectInputStream(InputStream is) throws IOException {
         /*
-        ObjectInputOutputStreamFactory oosf = ObjectInputOutputStreamFactoryRegistry.getObjectInputOutputStreamFactory();
-        return oosf.createObjectInputStream(is, vClazz.getClassLoader());
-        */
+         * ObjectInputOutputStreamFactory oosf =
+         * ObjectInputOutputStreamFactoryRegistry.getObjectInputOutputStreamFactory();
+         * return oosf.createObjectInputStream(is, vClazz.getClassLoader());
+         */
 
         return new ObjectInputStreamWithLoader(is, conf.getValueClazz().getClassLoader());
     }

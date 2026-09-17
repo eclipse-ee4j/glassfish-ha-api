@@ -37,8 +37,7 @@ import java.util.logging.Logger;
  */
 public final class BackingStoreFactoryRegistry {
 
-    private static final ConcurrentHashMap<String, BackingStoreFactory> factories =
-            new ConcurrentHashMap<String, BackingStoreFactory>();
+    private static final ConcurrentHashMap<String, BackingStoreFactory> factories = new ConcurrentHashMap<>();
 
     static {
         factories.put("noop", new NoOpBackingStoreFactory());
@@ -90,7 +89,7 @@ public final class BackingStoreFactoryRegistry {
     }
 
     public static synchronized Set<String> getRegisteredTypes() {
-        Set<String> result = new HashSet<String>(factories.keySet());
+        Set<String> result = new HashSet<>(factories.keySet());
         result.addAll(predefinedPersistenceTypes);
         return result;
     }
