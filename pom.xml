@@ -30,7 +30,7 @@
 
     <groupId>org.glassfish.ha</groupId>
     <artifactId>ha-api</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1-SNAPSHOT</version>
 
     <name>GlassFish High Availability APIs and SPI</name>
 
@@ -51,7 +51,7 @@
         <connection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</developerConnection>
         <url>https://github.com/eclipse-ee4j/glassfish-ha-api</url>
-        <tag>3.2.0</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>github</system>
