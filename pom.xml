@@ -19,9 +19,7 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -32,7 +30,7 @@
 
     <groupId>org.glassfish.ha</groupId>
     <artifactId>ha-api</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.0</version>
 
     <name>GlassFish High Availability APIs and SPI</name>
 
@@ -53,7 +51,7 @@
         <connection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/eclipse-ee4j/glassfish-ha-api.git</developerConnection>
         <url>https://github.com/eclipse-ee4j/glassfish-ha-api</url>
-        <tag>HEAD</tag>
+        <tag>3.2.0</tag>
     </scm>
     <issueManagement>
         <system>github</system>
